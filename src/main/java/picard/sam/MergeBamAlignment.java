@@ -30,11 +30,11 @@ import htsjdk.samtools.SAMSequenceDictionary;
 import htsjdk.samtools.SamPairUtil;
 import htsjdk.samtools.util.Log;
 import picard.PicardException;
-import picard.cmdline.CommandLineProgram;
 import picard.cmdline.CommandLineProgramProperties;
 import picard.cmdline.Option;
 import picard.cmdline.StandardOptionDefinitions;
 import picard.cmdline.programgroups.SamOrBam;
+import picard.sam.util.ReadOutputCommandLineProgram;
 
 import java.io.File;
 import java.util.*;
@@ -51,7 +51,7 @@ import java.util.*;
         usageShort = MergeBamAlignment.USAGE_SUMMARY,
         programGroup = SamOrBam.class
 )
-public class MergeBamAlignment extends CommandLineProgram {
+public class MergeBamAlignment extends ReadOutputCommandLineProgram {
     static final String USAGE_SUMMARY = "Merge alignment data from a SAM or BAM with data in an unmapped BAM file.  ";
     static final String USAGE_DETAILS = "This tool produces a new SAM or BAM file that includes all aligned and unaligned reads and also carries " +
             "forward additional read attributes from the unmapped BAM (attributes that are otherwise lost in the process of alignment)." +
@@ -279,6 +279,7 @@ public class MergeBamAlignment extends CommandLineProgram {
         merger.setIncludeSecondaryAlignments(INCLUDE_SECONDARY_ALIGNMENTS);
         merger.setAttributesToReverse(ATTRIBUTES_TO_REVERSE);
         merger.setAttributesToReverseComplement(ATTRIBUTES_TO_REVERSE_COMPLEMENT);
+        merger.setAddPGTagToReads(ADD_PG_TAG_TO_READS);
         merger.mergeAlignment(REFERENCE_SEQUENCE);
         merger.close();
 
