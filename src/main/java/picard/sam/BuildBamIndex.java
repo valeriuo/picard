@@ -110,13 +110,14 @@ public class BuildBamIndex extends CommandLineProgram {
                 baseFileName = inputFile.getAbsolutePath();
             }
 
+            // only BAI indices can be created for now, although CSI indices can be read as well
             if (baseFileName.endsWith(BamFileIoUtils.BAM_FILE_EXTENSION)) {
 
                 final int index = baseFileName.lastIndexOf('.');
-                OUTPUT = new File(baseFileName.substring(0, index) + BAMIndex.BAMIndexSuffix);
+                OUTPUT = new File(baseFileName.substring(0, index) + BAMIndex.BAI_INDEX_SUFFIX);
 
             } else {
-                OUTPUT = new File(baseFileName + BAMIndex.BAMIndexSuffix);
+                OUTPUT = new File(baseFileName + BAMIndex.BAI_INDEX_SUFFIX);
             }
         }
 
@@ -137,7 +138,7 @@ public class BuildBamIndex extends CommandLineProgram {
                     .open(inputFile);
         }
 
-        if (bam.type() != SamReader.Type.BAM_TYPE) {
+        if (bam.type() != SamReader.Type.BAM_TYPE && bam.type() != SamReader.Type.BAM_CSI_TYPE) {
             throw new SAMException("Input file must be bam file, not sam file.");
         }
 
